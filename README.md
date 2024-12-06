@@ -16,7 +16,7 @@ Swoft Console Component
 - composer command
 
 ```bash
-composer require swoft/console
+composer require swoft-fork/console
 ```
 
 ## Resources
