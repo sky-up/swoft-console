@@ -21,7 +21,9 @@ use function fgets;
 use function fwrite;
 use function implode;
 use function preg_match;
+use function stream_set_blocking;
 use function trim;
+use function usleep;
 use const STDIN;
 use const STDOUT;
 
@@ -108,7 +110,17 @@ class Input extends AbstractInput
             fwrite(STDOUT, $question . ($nl ? "\n" : ''));
         }
 
-        return trim(fgets($this->inputStream));
+        // 确保输入流处于阻塞模式
+        stream_set_blocking(STDIN, true);
+
+        // 直接从标准输入读取
+        $input = fgets(STDIN);
+
+        if ($input === false) {
+            return '';
+        }
+
+        return trim($input, " \t\n\r\0\x0B");
     }
 
     /***********************************************************************************

@@ -1,7 +1,7 @@
 {
   "name": "swoft-fork/console",
   "type": "library",
-  "version": "v2.0.11",
+  "version": "v2.1.0",
   "keywords": [
     "php",
     "swoole",
@@ -14,7 +14,7 @@
   "require": {
     "php": ">8.0",
     "ext-mbstring": "*",
-    "swoft-fork/stdlib": "~2.0.0",
+    "swoft-fork/stdlib": "~2.1.0",
     "toolkit/cli-utils": "~1.0"
   },
   "autoload": {
