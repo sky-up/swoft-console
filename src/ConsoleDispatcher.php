@@ -55,8 +55,15 @@ class ConsoleDispatcher
             return;
         }
 
+        // Always enable coroutine hook on server
+        CLog::info('Swoole\Runtime::enableCoroutine--swoft-console');
+        // 更安全的写法，先检查常量是否存在
+        $hookFlags = SWOOLE_HOOK_ALL;
+        if (defined('SWOOLE_HOOK_CURL')) {
+            $hookFlags ^= SWOOLE_HOOK_CURL;
+        }
         // Hook php io function
-        Runtime::enableCoroutine();
+        Runtime::enableCoroutine($hookFlags);
 
         // If in unit test env, has been in coroutine.
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
