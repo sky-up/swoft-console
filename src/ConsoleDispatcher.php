@@ -55,8 +55,6 @@ class ConsoleDispatcher
             return;
         }
 
-        // Always enable coroutine hook on server
-        CLog::info('Swoole\Runtime::enableCoroutine--swoft-console');
         // 更安全的写法，先检查常量是否存在
         $hookFlags = SWOOLE_HOOK_ALL;
         if (defined('SWOOLE_HOOK_CURL')) {
