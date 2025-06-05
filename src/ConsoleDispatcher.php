@@ -55,8 +55,8 @@ class ConsoleDispatcher
             return;
         }
 
-        // Hook php io function
-        Runtime::enableCoroutine();
+        // Hook php io function (禁用curl协程)
+        Runtime::enableCoroutine(true, SWOOLE_HOOK_ALL ^ SWOOLE_HOOK_CURL);
 
         // If in unit test env, has been in coroutine.
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
