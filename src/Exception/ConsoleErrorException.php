@@ -25,7 +25,7 @@ class ConsoleErrorException extends ConsoleException
      *
      * @throws ConsoleErrorException
      */
-    public static function throw(string $message, int $code = 0, Throwable $previous = null): void
+    public static function throw(string $message, int $code = 0, ?Throwable $previous = null): void
     {
         throw new self($message, $code, $previous);
     }

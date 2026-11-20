@@ -235,7 +235,7 @@ class Router implements RouterInterface
      * @param callable $grpFunc function(string $group, array $info)
      * @param callable $cmdFunc function(string $id, array $info)
      */
-    public function sortedEach(callable $grpFunc, callable $cmdFunc = null): void
+    public function sortedEach(callable $grpFunc, ?callable $cmdFunc = null): void
     {
         $groups = $this->groups;
         ksort($groups);

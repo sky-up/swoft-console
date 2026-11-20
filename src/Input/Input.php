@@ -55,7 +55,7 @@ class Input extends AbstractInput
      * @param null|array $args
      * @param bool       $parsing
      */
-    public function __construct(array $args = null, bool $parsing = true)
+    public function __construct(?array $args = null, bool $parsing = true)
     {
         if (null === $args) {
             $args = (array)$_SERVER['argv'];

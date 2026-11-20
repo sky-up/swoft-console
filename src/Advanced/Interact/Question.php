@@ -59,7 +59,7 @@ class Question extends InteractMessage
      * @param Closure|null $validator Validator, must return bool.
      * @return string
      */
-    public static function ask(string $question, string $default = '', Closure $validator = null): string
+    public static function ask(string $question, string $default = '', ?Closure $validator = null): string
     {
         if (!$question = trim($question)) {
             Show::error('Please provide a question text!', 1);

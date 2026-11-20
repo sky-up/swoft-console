@@ -10,6 +10,7 @@
 namespace Swoft\Console;
 
 use ReflectionException;
+use ReflectionNamedType;
 use ReflectionType;
 use Swoft;
 use Swoft\Bean\Annotation\Mapping\Bean;
@@ -55,8 +56,13 @@ class ConsoleDispatcher
             return;
         }
 
-        // Hook php io function (禁用curl协程)
-        Runtime::enableCoroutine(true, SWOOLE_HOOK_ALL ^ SWOOLE_HOOK_CURL);
+        // Hook php io function
+        $hookFlags = defined('SWOOLE_HOOK_ALL') ? SWOOLE_HOOK_ALL : 0;
+        if (defined('SWOOLE_VERSION_ID') && SWOOLE_VERSION_ID >= 50000) {
+            Runtime::enableCoroutine($hookFlags);
+        } else {
+            Runtime::enableCoroutine(true, $hookFlags);
+        }
 
         // If in unit test env, has been in coroutine.
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
@@ -129,7 +135,7 @@ class ConsoleDispatcher
          */
         foreach ($methodParams as [, $paramType, $devVal]) {
             // Defined type of the param
-            $type = $paramType->getName();
+            $type = $paramType instanceof ReflectionNamedType ? $paramType->getName() : '';
 
             if ($type === Output::class) {
                 $bindParams[] = Swoft::getBean('output');

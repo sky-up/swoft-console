@@ -60,7 +60,7 @@ class LimitedAsk extends InteractMessage
     public static function ask(
         string $question,
         string $default = '',
-        Closure $validator = null,
+        ?Closure $validator = null,
         int $times = 3
     ): string {
         if (!$question = trim($question)) {

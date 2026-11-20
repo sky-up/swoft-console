@@ -548,7 +548,7 @@ class Show
      *
      * @return Generator
      */
-    public static function dynamicTxt(string $doneMsg, string $fixMsg = null): Generator
+    public static function dynamicTxt(string $doneMsg, ?string $fixMsg = null): Generator
     {
         return self::dynamicText($doneMsg, $fixMsg);
     }
@@ -559,7 +559,7 @@ class Show
      *
      * @return Generator
      */
-    public static function dynamicText(string $doneMsg, string $fixedMsg = null): Generator
+    public static function dynamicText(string $doneMsg, ?string $fixedMsg = null): Generator
     {
         return DynamicText::gen($doneMsg, $fixedMsg);
     }

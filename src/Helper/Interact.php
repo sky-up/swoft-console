@@ -179,7 +179,7 @@ class Interact extends Show
      * @param bool|null $default
      * @return bool
      */
-    public static function answerIsYes(bool $default = null): bool
+    public static function answerIsYes(?bool $default = null): bool
     {
         $mark = ' [yes|no]: ';
 
@@ -213,7 +213,7 @@ class Interact extends Show
      * @param Closure $validator The validate callback. It must return bool.
      * @return string
      */
-    public static function ask(string $question, string $default = '', Closure $validator = null): string
+    public static function ask(string $question, string $default = '', ?Closure $validator = null): string
     {
         return self::question($question, $default, $validator);
     }
@@ -226,7 +226,7 @@ class Interact extends Show
      * @param Closure|null $validator Validator, must return bool.
      * @return string
      */
-    public static function question(string $question, string $default = '', Closure $validator = null): string
+    public static function question(string $question, string $default = '', ?Closure $validator = null): string
     {
         return Question::ask($question, $default, $validator);
     }
@@ -243,7 +243,7 @@ class Interact extends Show
     public static function limitedAsk(
         string $question,
         string $default = '',
-        Closure $validator = null,
+        ?Closure $validator = null,
         int $times = 3
     ): string {
         return LimitedAsk::ask($question, $default, $validator, $times);
