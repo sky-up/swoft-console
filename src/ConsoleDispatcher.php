@@ -18,10 +18,13 @@ use Swoft\Console\Input\Input;
 use Swoft\Console\Output\Output;
 use Swoft\Context\Context;
 use Swoft\SwoftEvent;
+use Swoole\Coroutine;
 use Swoole\Runtime;
 use Throwable;
 use function defined;
 use function get_class;
+use function is_array;
+use function method_exists;
 use function srun;
 
 /**
@@ -56,8 +59,8 @@ class ConsoleDispatcher
             return;
         }
 
-        // Hook php io function
-        $hookFlags = defined('SWOOLE_HOOK_ALL') ? SWOOLE_HOOK_ALL : 0;
+        // Respect hook_flags set by entry script (e.g. bin/swoft), otherwise exclude cURL hooks for SDK/Guzzle safety
+        $hookFlags = $this->resolveHookFlags();
         if (defined('SWOOLE_VERSION_ID') && SWOOLE_VERSION_ID >= 50000) {
             Runtime::enableCoroutine($hookFlags);
         } else {
@@ -198,5 +201,30 @@ class ConsoleDispatcher
         Swoft::triggerByArray(ConsoleEvent::EXECUTE_AFTER, $command, [
             'command' => $command,
         ]);
+    }
+
+    /**
+     * Resolve coroutine hook flags for console commands.
+     *
+     * @return int
+     */
+    private function resolveHookFlags(): int
+    {
+        if (method_exists(Coroutine::class, 'getOptions')) {
+            $options = Coroutine::getOptions();
+            if (is_array($options) && isset($options['hook_flags'])) {
+                return (int)$options['hook_flags'];
+            }
+        }
+
+        $flags = defined('SWOOLE_HOOK_ALL') ? SWOOLE_HOOK_ALL : 0;
+        if (defined('SWOOLE_HOOK_CURL')) {
+            $flags &= ~SWOOLE_HOOK_CURL;
+        }
+        if (defined('SWOOLE_HOOK_NATIVE_CURL')) {
+            $flags &= ~SWOOLE_HOOK_NATIVE_CURL;
+        }
+
+        return $flags;
     }
 }
